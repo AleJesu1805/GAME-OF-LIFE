@@ -1,24 +1,33 @@
 const canvas = document.querySelector("canvas");
-canvas.width = 10;
-canvas.height = 10;
+canvas.width = 500;
+canvas.height = 500;
 const ctx = canvas.getContext("2d");
 
-const colorNumero = {
-  0: "#697850",
-  1: "#4e590f",
-};
-
-const celulas = new Set();
-
-celulas.add({ x: 1, y: 2 });
-celulas.add({ x: 9, y: 2 });
-celulas.add({ x: 4, y: 4 });
-celulas.add({ x: 3, y: 3 });
-celulas.add({ x: 2, y: 5 });
+const cuadricula = { ancho: 25, alto: 25, lineWidth: 1, lineStyle: "#000000" };
+const escala = canvas.width / cuadricula.ancho;
+const celulas = [];
 
 function drawCelula(pos = { x: 1, y: 2 }) {
-  ctx.fillStyle = colorNumero[1];
-  ctx.fillRect(pos.x, pos.y, 1, 1);
+  const escala = canvas.width / cuadricula.ancho;
+  ctx.fillStyle = "#3e6016";
+  ctx.fillRect(pos.x * escala, pos.y * escala, escala, escala);
+
+  ctx.strokeStyle = cuadricula.lineStyle;
+  ctx.lineWidth = cuadricula.lineWidth;
+  ctx.strokeRect(pos.x * escala, pos.y * escala, escala, escala);
+}
+
+function drawCelda() {
+  for (let x = 0; x < cuadricula.ancho; x++) {
+    for (let y = 0; y < cuadricula.alto; y++) {
+      ctx.fillStyle = "#78856a";
+      ctx.fillRect(x * escala, y * escala, escala, escala);
+
+      ctx.strokeStyle = cuadricula.lineStyle;
+      ctx.lineWidth = cuadricula.lineWidth;
+      ctx.strokeRect(x * escala, y * escala, escala, escala);
+    }
+  }
 }
 
 function drawAllCelulas() {
@@ -27,28 +36,106 @@ function drawAllCelulas() {
   }
 }
 
+function observarVecinos(celula) {
+  const alrededores = [
+    { x: celula.x + 1, y: celula.y },
+    { x: celula.x - 1, y: celula.y },
+    { x: celula.x, y: celula.y + 1 },
+    { x: celula.x, y: celula.y - 1 },
+    { x: celula.x + 1, y: celula.y - 1 },
+    { x: celula.x - 1, y: celula.y + 1 },
+    { x: celula.x + 1, y: celula.y + 1 },
+    { x: celula.x - 1, y: celula.y - 1 },
+  ];
+  let vecinos = 0;
+  celulas.forEach((cel) => {
+    for (let i = 0; i < alrededores.length; i++) {
+      if (alrededores[i].x === cel.x && alrededores[i].y === cel.y) {
+        vecinos++;
+      }
+    }
+  });
+  return vecinos;
+}
+
 function updateCelulas() {
-  for (let i = 0; i < celulas.size; i++) {
-    celulas.forEach((cel) => {
-      console.log(cel);
-    });
+  for (let i = celulas.length - 1; i >= 0; i--) {
+    const vecinos = observarVecinos(celulas[i]);
+
+    if (vecinos < 2 || vecinos > 3) {
+      celulas.splice(i, 1);
+    }
   }
 }
 
-updateCelulas();
+function revivir() {
+  for (let x = 0; x < cuadricula.ancho; x++) {
+    for (let y = 0; y < cuadricula.alto; y++) {
+      if (observarVecinos({ x: x, y: y }) === 3) {
+        celulas.push({ x: x, y: y });
+      }
+    }
+  }
+}
 
-const fps = 10;
+canvas.addEventListener("pointerdown", (e) => {
+  const rect = canvas.getBoundingClientRect();
+  const x = Math.floor(
+    ((e.clientX - rect.left) / rect.width) * cuadricula.ancho,
+  );
+  const y = Math.floor(
+    ((e.clientY - rect.top) / rect.height) * cuadricula.alto,
+  );
+
+  const indice = celulas.findIndex(
+    (celula) => celula.x === x && celula.y === y,
+  );
+
+  if (indice === -1) {
+    celulas.push({ x, y });
+  } else {
+    celulas.splice(indice, 1);
+  }
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  drawCelda();
+  drawAllCelulas();
+});
+
+drawCelda();
+drawAllCelulas();
+
+const fps = 1;
 const frameDuration = 1000 / fps;
+
 let ultimoTiempo = 0;
+let animationFrameId = null;
+let juegoActivo = false;
+
 function gameLoop(tiempoActual) {
+  if (!juegoActivo) return;
+  animationFrameId = requestAnimationFrame(gameLoop);
   const delta = tiempoActual - ultimoTiempo;
   if (delta < frameDuration) return;
   ultimoTiempo = tiempoActual - (delta % frameDuration);
 
+  updateCelulas();
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  drawCelda();
+  revivir();
   drawAllCelulas();
-  requestAnimationFrame(gameLoop);
 }
 
-setTimeout(() => {
-  requestAnimationFrame(gameLoop);
-}, 500);
+function play() {
+  if (juegoActivo) return;
+  juegoActivo = true;
+  ultimoTiempo = performance.now();
+  animationFrameId = requestAnimationFrame(gameLoop);
+}
+function pausa() {
+  juegoActivo = false;
+  if (animationFrameId !== null) {
+    cancelAnimationFrame(animationFrameId);
+    animationFrameId = null;
+  }
+}
