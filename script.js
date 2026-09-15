@@ -3,13 +3,21 @@ canvas.width = 500;
 canvas.height = 500;
 const ctx = canvas.getContext("2d");
 
-const cuadricula = { ancho: 25, alto: 25, lineWidth: 1, lineStyle: "#000000" };
+const cuadricula = {
+  ancho: 50,
+  alto: 50,
+  lineWidth: 0.00001,
+  lineStyle: "#000000",
+};
 const escala = canvas.width / cuadricula.ancho;
 const celulas = [];
+celulas.push({ x: 2, y: 3 });
+celulas.push({ x: 3, y: 3 });
+celulas.push({ x: 4, y: 3 });
 
 function drawCelula(pos = { x: 1, y: 2 }) {
   const escala = canvas.width / cuadricula.ancho;
-  ctx.fillStyle = "#3e6016";
+  ctx.fillStyle = "#161a60";
   ctx.fillRect(pos.x * escala, pos.y * escala, escala, escala);
 
   ctx.strokeStyle = cuadricula.lineStyle;
@@ -17,24 +25,31 @@ function drawCelula(pos = { x: 1, y: 2 }) {
   ctx.strokeRect(pos.x * escala, pos.y * escala, escala, escala);
 }
 
-function drawCelda() {
+function drawCelda(pos = { x: 5, y: 9 }) {
+  const escala = canvas.width / cuadricula.ancho;
+  ctx.fillStyle = "#7f8285";
+  ctx.fillRect(pos.x * escala, pos.y * escala, escala, escala);
+
+  ctx.strokeStyle = cuadricula.lineStyle;
+  ctx.lineWidth = cuadricula.lineWidth;
+  ctx.strokeRect(pos.x * escala, pos.y * escala, escala, escala);
+}
+
+function drawGeneration() {
   for (let x = 0; x < cuadricula.ancho; x++) {
     for (let y = 0; y < cuadricula.alto; y++) {
-      ctx.fillStyle = "#78856a";
-      ctx.fillRect(x * escala, y * escala, escala, escala);
-
-      ctx.strokeStyle = cuadricula.lineStyle;
-      ctx.lineWidth = cuadricula.lineWidth;
-      ctx.strokeRect(x * escala, y * escala, escala, escala);
+      const indice = celulas.findIndex(
+        (celula) => celula.x === x && celula.y === y,
+      );
+      if (indice === -1) {
+        drawCelda({ x, y });
+      } else {
+        drawCelula(celulas[indice]);
+      }
     }
   }
 }
-
-function drawAllCelulas() {
-  for (const celula of celulas) {
-    drawCelula(celula);
-  }
-}
+drawGeneration();
 
 function observarVecinos(celula) {
   const alrededores = [
@@ -60,22 +75,35 @@ function observarVecinos(celula) {
 
 function updateCelulas() {
   for (let i = celulas.length - 1; i >= 0; i--) {
-    const vecinos = observarVecinos(celulas[i]);
-
-    if (vecinos < 2 || vecinos > 3) {
+    if (observarVecinos(celulas[i]) < 2 || observarVecinos(celulas[i]) > 3) {
       celulas.splice(i, 1);
     }
   }
 }
 
-function revivir() {
+function updateGeneration() {
   for (let x = 0; x < cuadricula.ancho; x++) {
     for (let y = 0; y < cuadricula.alto; y++) {
-      if (observarVecinos({ x: x, y: y }) === 3) {
-        celulas.push({ x: x, y: y });
+      const celda = { x, y };
+      const indice = celulas.findIndex(
+        (celula) => celula.x === x && celula.y === y,
+      );
+      if (indice === -1) {
+        if (observarVecinos(celda) === 3) {
+          celulas.push(celda);
+        }
+        drawCelda({ x, y });
+      } else {
+        drawCelula(celulas[indice]);
       }
     }
   }
+  updateCelulas();
+}
+
+function update() {
+  updateGeneration();
+  // drawGeneration();
 }
 
 canvas.addEventListener("pointerdown", (e) => {
@@ -93,19 +121,17 @@ canvas.addEventListener("pointerdown", (e) => {
 
   if (indice === -1) {
     celulas.push({ x, y });
+    drawCelula({ x, y });
   } else {
+    drawCelda(celulas[indice]);
     celulas.splice(indice, 1);
   }
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  drawCelda();
-  drawAllCelulas();
+  drawGeneration();
 });
 
-drawCelda();
-drawAllCelulas();
-
-const fps = 1;
+const fps = 15;
 const frameDuration = 1000 / fps;
 
 let ultimoTiempo = 0;
@@ -119,11 +145,8 @@ function gameLoop(tiempoActual) {
   if (delta < frameDuration) return;
   ultimoTiempo = tiempoActual - (delta % frameDuration);
 
-  updateCelulas();
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  drawCelda();
-  revivir();
-  drawAllCelulas();
+  update();
 }
 
 function play() {
