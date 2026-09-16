@@ -4,16 +4,46 @@ canvas.height = 500;
 const ctx = canvas.getContext("2d");
 
 const cuadricula = {
-  ancho: 50,
-  alto: 50,
-  lineWidth: 0.00001,
+  ancho: 10,
+  alto: 10,
+  lineWidth: 0.1,
   lineStyle: "#000000",
 };
 const escala = canvas.width / cuadricula.ancho;
 const celulas = [];
-celulas.push({ x: 2, y: 3 });
-celulas.push({ x: 3, y: 3 });
-celulas.push({ x: 4, y: 3 });
+// celulas.push({ x: 2, y: 3 });
+// celulas.push({ x: 3, y: 3 });
+// celulas.push({ x: 4, y: 3 });
+
+class Formas {
+  constructor(x, y, nameForma) {
+    this.x = x;
+    this.y = y;
+    this.nameForma = nameForma;
+    this.formas = {
+      linea: [
+        { x: this.x, y: this.y },
+        { x: this.x + 1, y: this.y },
+        { x: this.x + 2, y: this.y },
+      ],
+      columna: [
+        { x: this.x, y: this.y },
+        { x: this.x, y: this.y + 1 },
+        { x: this.x, y: this.y + 2 },
+      ],
+    };
+  }
+  drawForma() {
+    for (let i = 0; i < this.formas[this.nameForma].length; i++) {
+      celulas.push(this.formas[this.nameForma][i]);
+      drawCelula(this.formas[this.nameForma][i]);
+      console.log(this.formas[this.nameForma][i]);
+    }
+  }
+}
+
+let lines = new Formas(6, 4, "columna");
+lines.drawForma();
 
 function drawCelula(pos = { x: 1, y: 2 }) {
   const escala = canvas.width / cuadricula.ancho;
@@ -73,37 +103,29 @@ function observarVecinos(celula) {
   return vecinos;
 }
 
-function updateCelulas() {
-  for (let i = celulas.length - 1; i >= 0; i--) {
-    if (observarVecinos(celulas[i]) < 2 || observarVecinos(celulas[i]) > 3) {
-      celulas.splice(i, 1);
-    }
-  }
-}
-
 function updateGeneration() {
+  const siguiente = [];
+
   for (let x = 0; x < cuadricula.ancho; x++) {
     for (let y = 0; y < cuadricula.alto; y++) {
       const celda = { x, y };
-      const indice = celulas.findIndex(
-        (celula) => celula.x === x && celula.y === y,
-      );
-      if (indice === -1) {
-        if (observarVecinos(celda) === 3) {
-          celulas.push(celda);
-        }
-        drawCelda({ x, y });
+      const vecinos = observarVecinos(celda); // siempre contra `celulas`, el estado viejo
+      const viva = celulas.some((c) => c.x === x && c.y === y);
+
+      if (viva && (vecinos === 2 || vecinos === 3)) {
+        siguiente.push(celda);
+        drawCelula(celda);
+      } else if (!viva && vecinos === 3) {
+        siguiente.push(celda);
+        drawCelula(celda);
       } else {
-        drawCelula(celulas[indice]);
+        drawCelda(celda);
       }
     }
   }
-  updateCelulas();
-}
 
-function update() {
-  updateGeneration();
-  // drawGeneration();
+  celulas.length = 0;
+  celulas.push(...siguiente);
 }
 
 canvas.addEventListener("pointerdown", (e) => {
@@ -146,7 +168,7 @@ function gameLoop(tiempoActual) {
   ultimoTiempo = tiempoActual - (delta % frameDuration);
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  update();
+  updateGeneration();
 }
 
 function play() {
