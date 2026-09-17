@@ -1,18 +1,30 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 html,
 body {
-  padding: 0;
   margin: 0;
+  padding: 0;
+  width: 100%;
   background-color: #080b08;
   font-family: "Courier New", monospace;
 }
 
+body {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+}
+
 header {
-  position: fixed;
-  inset: 0 0 auto;
-  z-index: 10;
+  grid-row: 1;
   width: 100%;
-  padding: clamp(10px, 2vw, 18px);
-  box-sizing: border-box;
+  padding: clamp(8px, 1.6vh, 18px) clamp(10px, 2vw, 18px);
   background-color: #111a12;
   border-bottom: 2px solid #697850;
   box-shadow: 0 4px 0 #050705;
@@ -23,7 +35,7 @@ header ul {
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  gap: clamp(8px, 1.5vw, 16px);
+  gap: clamp(6px, 1.2vw, 16px);
   width: min(100%, 1100px);
   padding: 0;
   margin: 0 auto;
@@ -31,23 +43,22 @@ header ul {
 }
 
 header li {
-  flex: 1 1 clamp(110px, 15vw, 160px);
+  flex: 1 1 clamp(96px, 15vw, 160px);
   min-width: 0;
 }
 
 header button,
 header select {
   width: 100%;
-  min-height: clamp(40px, 5vw, 52px);
-  box-sizing: border-box;
+  min-height: clamp(36px, 4.5vh, 52px);
   font:
-    bold clamp(0.72rem, 1.6vw, 0.95rem) "Courier New",
+    bold clamp(0.7rem, 1.5vw, 0.95rem) "Courier New",
     monospace;
   letter-spacing: clamp(0.5px, 0.15vw, 1px);
 }
 
 header button {
-  padding: clamp(8px, 1.2vw, 12px);
+  padding: clamp(6px, 1vh, 12px);
   color: #d7e7c8;
   background-color: #183b07;
   border: 2px solid #697850;
@@ -94,13 +105,20 @@ header select option {
 }
 
 canvas {
-  background-color: rgb(74, 96, 96);
-  width: clamp(100px, 90dvw, 500px);
-  height: clamp(100px, 90dvw, 500px);
+  grid-row: 2;
+  align-self: center;
+  justify-self: center;
+  width: clamp(100px, min(86vw, calc(100vh - 170px)), 620px);
+  height: clamp(100px, min(86vw, calc(100vh - 170px)), 620px);
+  width: clamp(100px, min(86vw, calc(100dvh - 170px)), 620px);
+  height: clamp(100px, min(86vw, calc(100dvh - 170px)), 620px);
   display: block;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  image-rendering: pixelated;
+  background-color: rgb(40, 62, 62);
+  /* image-rendering: pixelated; */
+}
+
+@media (max-height: 380px) {
+  body {
+    overflow-y: auto;
+  }
 }

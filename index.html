@@ -1,12 +1,14 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
     />
+    <meta name="google" content="notranslate" />
     <link rel="shortcut icon" href="img/gameLifeIco.png" type="image/x-icon" />
+    <link rel="manifest" href="manifest.json" />
     <link rel="stylesheet" href="styles.css" />
     <title>El Juego De La Vida</title>
   </head>
@@ -23,15 +25,15 @@
         <li><button onclick="previusGeneration()">BACK</button></li>
         <li><button onclick="cleanTable()">CLEAN</button></li>
         <li>
-          <select id="patternSelect" name="select"></select>
-        </li>
-        <li>
           <select id="orientationSelect" name="select">
             <option value="1" selected>0deg</option>
             <option value="2">90deg</option>
             <option value="3">180deg</option>
             <option value="4">270</option>
           </select>
+        </li>
+        <li>
+          <select id="patternSelect" name="select"></select>
         </li>
       </ul>
     </header>
