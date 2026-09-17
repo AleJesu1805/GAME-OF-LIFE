@@ -1,5 +1,9 @@
 import { cleanCanvas } from "./canvas/canvas.js";
-import { updateGeneration } from "./game-logic/game.js";
+import { updateGeneration, cleanTable } from "./game-logic/game.js";
+
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("sw.js");
+}
 
 updateGeneration();
 
@@ -54,3 +58,4 @@ export function pausa() {
 window.play = play;
 window.pausa = pausa;
 window.updateGeneration = updateGeneration;
+window.cleanTable = cleanTable;

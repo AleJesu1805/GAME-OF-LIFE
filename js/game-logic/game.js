@@ -1,6 +1,6 @@
 import { drawCelda, drawCelula, cuadricula } from "../canvas/canvas.js";
 
-export const celulas = [];
+export let celulas = [];
 
 export function observarVecinos(celula) {
   const alrededores = [
@@ -47,4 +47,9 @@ export function updateGeneration() {
 
   celulas.length = 0;
   celulas.push(...siguiente);
+}
+
+export function cleanTable() {
+  celulas = [];
+  updateGeneration();
 }

@@ -1,4 +1,5 @@
 import { celulas } from "../game-logic/game.js";
+import { drawCelula } from "../canvas/canvas.js";
 export class Formas {
   constructor(x, y, nameForma, orientacion = 1) {
     this.x = x;
