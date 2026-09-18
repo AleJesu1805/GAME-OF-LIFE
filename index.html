@@ -13,10 +13,14 @@
     <header>
       <ul>
         <li>
-          <button id="playButton" onclick="play()">PLAY</button>
+          <button id="playButton" onclick="play()" aria-pressed="false">
+            PLAY
+          </button>
         </li>
         <li>
-          <button id="pauseButton" onclick="pausa()">PAUSED</button>
+          <button id="pauseButton" onclick="pausa()" aria-pressed="true">
+            PAUSED
+          </button>
         </li>
         <li><button onclick="updateGeneration()">NEXT</button></li>
         <li><button onclick="previusGeneration()">BACK</button></li>
@@ -31,6 +35,10 @@
         </li>
         <li>
           <select id="patternSelect" name="select"></select>
+        </li>
+        <li class="status-group">
+          <span id="infoPopulation">POPULATION: 00</span>
+          <span id="infoGeneration">GENERATION: 00</span>
         </li>
       </ul>
     </header>

@@ -1,6 +1,10 @@
 import { drawCelda, drawCelula, cuadricula } from "../canvas/canvas.js";
 
+export let infoPopulation = document.getElementById("infoPopulation");
+export let infoGeneration = document.getElementById("infoGeneration");
+
 export let celulas = [];
+export let generation = 0;
 
 function clave(x, y) {
   return `${x},${y}`;
@@ -27,6 +31,7 @@ export function observarVecinos(celula, vivasSet) {
 }
 
 export function updateGeneration() {
+  generation++;
   const siguiente = [];
   const vivasSet = new Set(celulas.map((c) => clave(c.x, c.y)));
 
@@ -50,6 +55,8 @@ export function updateGeneration() {
 
   celulas.length = 0;
   celulas.push(...siguiente);
+  infoPopulation.textContent = `POPULATION: ${celulas.length}`;
+  infoGeneration.textContent = `GENERATION ${generation}`;
 }
 
 export function cleanTable() {

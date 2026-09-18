@@ -18,7 +18,23 @@ export function cleanCanvas() {
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 }
 
-export function drawCircle(pos = { x: 1, y: 1 }, color = "#179211") {
+const colors = [
+  "#8B1E3F", // Rojo vino
+  "#16605A", // Verde petróleo
+  "#1D3557", // Azul marino
+  "#A44A1F", // Naranja quemado
+  "#9A7B16", // Amarillo oscuro
+  "#5A189A", // Violeta oscuro
+  "#9D174D", // Rosa vino
+  "#006494", // Azul profundo
+  "#386641", // Verde bosque
+  "#3C096C", // Púrpura oscuro
+];
+
+export function drawCircle(
+  pos = { x: 1, y: 1 },
+  color = colors[Math.round(Math.random() * colors.length)],
+) {
   // ctx.beginPath();
   // ctx.arc(pos.x * escala, pos.y * escala, escala / 2, 0, 2 * Math.PI);
   // ctx.strokeStyle = "blue";
@@ -38,7 +54,8 @@ export function drawCircle(pos = { x: 1, y: 1 }, color = "#179211") {
 }
 
 export function drawCelula(pos = { x: 1, y: 1 }) {
-  ctx.fillStyle = "#166051";
+  // ctx.fillStyle = colors[Math.round(Math.random() * colors.length)];
+  ctx.fillStyle = colors[8];
   ctx.fillRect(pos.x * escala, pos.y * escala, escala, escala);
 
   ctx.strokeStyle = cuadricula.lineStyle;

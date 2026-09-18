@@ -1,11 +1,14 @@
 import { canvas, cuadricula, drawCelda } from "../canvas/canvas.js";
-import { celulas } from "../game-logic/game.js";
+import { celulas, infoPopulation } from "../game-logic/game.js";
 import { Formas } from "./Formas.js";
 
 const patternSelect = document.getElementById("patternSelect");
 const orientationSelect = document.getElementById("orientationSelect");
 const formas = new Formas(null, null, null, null);
-let selectedForm, selectedOrientation;
+
+// Inicializamos selectedOrientation con el valor actual del select (por defecto "1")
+let selectedForm,
+  selectedOrientation = parseInt(orientationSelect.value);
 
 Object.keys(formas.formas).forEach((forma) => {
   let option = document.createElement("option");
@@ -22,12 +25,10 @@ patternSelect.addEventListener("change", (e) => {
   selectedForm = e.target.value;
 });
 
-// const formaOptions = patternSelect.childNodes;
-// formaOptions.forEach((e) => {
-//   if (e.selectedForm) {
-//     forma = e.value;
-//   }
-// });
+// NUEVO: Escuchar cambios en el select de orientación para actualizar la variable
+orientationSelect.addEventListener("change", (e) => {
+  selectedOrientation = parseInt(e.target.value);
+});
 
 canvas.addEventListener("pointerdown", (e) => {
   const rect = canvas.getBoundingClientRect();
@@ -35,8 +36,9 @@ canvas.addEventListener("pointerdown", (e) => {
   let y = Math.floor(((e.clientY - rect.top) / rect.height) * cuadricula.alto);
 
   // SELECCIONAR FORMAS
-
-  const forma = new Formas(x, y, selectedForm, 4);
+  // MODIFICADO: Usar selectedOrientation en lugar del valor fijo 4
+  const forma = new Formas(x, y, selectedForm, selectedOrientation);
+  console.log(forma.formas[selectedForm].length);
 
   // DIBUJAR CELULAS
   const indice = celulas.findIndex(
@@ -44,15 +46,10 @@ canvas.addEventListener("pointerdown", (e) => {
   );
 
   if (indice === -1) {
-    // celulas.push({ x, y });
     forma.drawForma();
-    // drawCelula({ x, y });
   } else {
     drawCelda(celulas[indice]);
     celulas.splice(indice, 1);
   }
-
-  // cleanCanvas();
-  // updateGeneration();
-  // drawGeneration();
+  infoPopulation.textContent = `POPULATION: ${celulas.length}`;
 });
