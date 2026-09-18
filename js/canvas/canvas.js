@@ -6,10 +6,10 @@ canvas.width = canvasWidth;
 canvas.height = canvasHeight;
 
 export const cuadricula = {
-  ancho: 100,
-  alto: 100,
-  lineWidth: 0.1,
-  lineStyle: "#000000",
+  ancho: 70,
+  alto: 70,
+  lineWidth: 0.5,
+  lineStyle: "#0b1431",
 };
 export const escala = canvasWidth / cuadricula.ancho;
 
