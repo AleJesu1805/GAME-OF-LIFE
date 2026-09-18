@@ -2,7 +2,11 @@ import { drawCelda, drawCelula, cuadricula } from "../canvas/canvas.js";
 
 export let celulas = [];
 
-export function observarVecinos(celula) {
+function clave(x, y) {
+  return `${x},${y}`;
+}
+
+export function observarVecinos(celula, vivasSet) {
   const alrededores = [
     { x: celula.x + 1, y: celula.y },
     { x: celula.x - 1, y: celula.y },
@@ -14,24 +18,23 @@ export function observarVecinos(celula) {
     { x: celula.x - 1, y: celula.y - 1 },
   ];
   let vecinos = 0;
-  celulas.forEach((cel) => {
-    for (let i = 0; i < alrededores.length; i++) {
-      if (alrededores[i].x === cel.x && alrededores[i].y === cel.y) {
-        vecinos++;
-      }
+  for (let i = 0; i < alrededores.length; i++) {
+    if (vivasSet.has(clave(alrededores[i].x, alrededores[i].y))) {
+      vecinos++;
     }
-  });
+  }
   return vecinos;
 }
 
 export function updateGeneration() {
   const siguiente = [];
+  const vivasSet = new Set(celulas.map((c) => clave(c.x, c.y))); // se arma UNA vez, no 900
 
   for (let x = 0; x < cuadricula.ancho; x++) {
     for (let y = 0; y < cuadricula.alto; y++) {
       const celda = { x, y };
-      const vecinos = observarVecinos(celda); // siempre contra `celulas`, el estado viejo
-      const viva = celulas.some((c) => c.x === x && c.y === y);
+      const vecinos = observarVecinos(celda, vivasSet);
+      const viva = vivasSet.has(clave(x, y)); // antes: celulas.some(...)
 
       if (viva && (vecinos === 2 || vecinos === 3)) {
         siguiente.push(celda);
