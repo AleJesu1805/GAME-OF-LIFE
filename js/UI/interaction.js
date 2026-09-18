@@ -11,7 +11,7 @@ Object.keys(formas.formas).forEach((forma) => {
   let option = document.createElement("option");
   option.value = forma;
   option.innerHTML = forma.toUpperCase();
-  if (option.innerHTML === "COHETE") {
+  if (option.innerHTML === "PUNTO") {
     option.setAttribute("selected", "true");
     selectedForm = option.value;
   }

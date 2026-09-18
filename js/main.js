@@ -7,7 +7,7 @@ if ("serviceWorker" in navigator) {
 
 updateGeneration();
 
-const fps = 15;
+const fps = 20;
 const frameDuration = 1000 / fps;
 
 let ultimoTiempo = 0;

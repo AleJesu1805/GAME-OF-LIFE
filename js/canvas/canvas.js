@@ -6,8 +6,8 @@ canvas.width = canvasWidth;
 canvas.height = canvasHeight;
 
 export const cuadricula = {
-  ancho: 30,
-  alto: 30,
+  ancho: 50,
+  alto: 50,
   lineWidth: 0.1,
   lineStyle: "#000000",
 };
@@ -38,13 +38,13 @@ export function drawCircle(pos = { x: 1, y: 1 }, color = "#179211") {
 }
 
 export function drawCelula(pos = { x: 1, y: 1 }) {
-  // ctx.fillStyle = "#161a60";
-  // ctx.fillRect(pos.x * escala, pos.y * escala, escala, escala);
+  ctx.fillStyle = "#166051";
+  ctx.fillRect(pos.x * escala, pos.y * escala, escala, escala);
 
-  // ctx.strokeStyle = cuadricula.lineStyle;
-  // ctx.lineWidth = cuadricula.lineWidth;
-  // ctx.strokeRect(pos.x * escala, pos.y * escala, escala, escala);
-  drawCircle(pos);
+  ctx.strokeStyle = cuadricula.lineStyle;
+  ctx.lineWidth = cuadricula.lineWidth;
+  ctx.strokeRect(pos.x * escala, pos.y * escala, escala, escala);
+  // drawCircle(pos);
 }
 
 export function drawCelda(pos = { x: 5, y: 9 }) {
