@@ -28,13 +28,13 @@ export function observarVecinos(celula, vivasSet) {
 
 export function updateGeneration() {
   const siguiente = [];
-  const vivasSet = new Set(celulas.map((c) => clave(c.x, c.y))); // se arma UNA vez, no 900
+  const vivasSet = new Set(celulas.map((c) => clave(c.x, c.y)));
 
   for (let x = 0; x < cuadricula.ancho; x++) {
     for (let y = 0; y < cuadricula.alto; y++) {
       const celda = { x, y };
       const vecinos = observarVecinos(celda, vivasSet);
-      const viva = vivasSet.has(clave(x, y)); // antes: celulas.some(...)
+      const viva = vivasSet.has(clave(x, y));
 
       if (viva && (vecinos === 2 || vecinos === 3)) {
         siguiente.push(celda);

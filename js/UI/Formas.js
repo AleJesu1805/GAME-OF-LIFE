@@ -1,5 +1,6 @@
 import { celulas } from "../game-logic/game.js";
 import { drawCelula } from "../canvas/canvas.js";
+
 export class Formas {
   constructor(x, y, nameForma, orientacion = 1) {
     this.x = x;
@@ -123,7 +124,7 @@ export class Formas {
         { x: this.x + 2, y: this.y + 3 },
         { x: this.x + 3, y: this.y + 3 },
       ],
-      // --- Cañón de planeadores de Gosper (el patrón "infinito" más famoso) ---
+      // --- Cañón de planeadores de Gosper ---
       canonGosper: [
         { x: this.x + 24, y: this.y },
         { x: this.x + 22, y: this.y + 1 },
@@ -162,8 +163,48 @@ export class Formas {
         { x: this.x + 12, y: this.y + 8 },
         { x: this.x + 13, y: this.y + 8 },
       ],
+      // --- Matusalenes (Patrones pequeños con evolución larga) ---
+      rPentomino: [
+        // 5 células, tarda 1103 generaciones en estabilizarse
+        { x: this.x + 1, y: this.y },
+        { x: this.x + 2, y: this.y },
+        { x: this.x, y: this.y + 1 },
+        { x: this.x + 1, y: this.y + 1 },
+        { x: this.x + 1, y: this.y + 2 },
+      ],
+      bellota: [
+        // "Acorn": 7 células, tarda 5206 generaciones en estabilizarse
+        { x: this.x + 1, y: this.y },
+        { x: this.x + 3, y: this.y + 1 },
+        { x: this.x, y: this.y + 2 },
+        { x: this.x + 1, y: this.y + 2 },
+        { x: this.x + 4, y: this.y + 2 },
+        { x: this.x + 5, y: this.y + 2 },
+        { x: this.x + 6, y: this.y + 2 },
+      ],
+      tenaz: [
+        // "Diehard": 7 células, desaparece por completo tras 130 generaciones
+        { x: this.x + 6, y: this.y },
+        { x: this.x, y: this.y + 1 },
+        { x: this.x + 1, y: this.y + 1 },
+        { x: this.x + 1, y: this.y + 2 },
+        { x: this.x + 5, y: this.y + 2 },
+        { x: this.x + 6, y: this.y + 2 },
+        { x: this.x + 7, y: this.y + 2 },
+      ],
+      piHeptomino: [
+        // 7 células, tarda 110 generaciones en estabilizarse
+        { x: this.x, y: this.y },
+        { x: this.x + 1, y: this.y },
+        { x: this.x + 2, y: this.y },
+        { x: this.x, y: this.y + 1 },
+        { x: this.x + 2, y: this.y + 1 },
+        { x: this.x, y: this.y + 2 },
+        { x: this.x + 2, y: this.y + 2 },
+      ],
     };
   }
+
   drawForma() {
     const forma = this.formas[this.nameForma];
     const rotaciones = [
@@ -173,6 +214,7 @@ export class Formas {
       ({ x, y }) => ({ x: y, y: -x }), // 270 grados
     ];
     const rotar = rotaciones[this.orientacion % 4];
+
     forma.forEach((celula) => {
       const relativa = {
         x: celula.x - this.x,
