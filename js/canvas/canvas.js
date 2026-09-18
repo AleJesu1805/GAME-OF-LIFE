@@ -6,8 +6,8 @@ canvas.width = canvasWidth;
 canvas.height = canvasHeight;
 
 export const cuadricula = {
-  ancho: 70,
-  alto: 70,
+  ancho: 50,
+  alto: 50,
   lineWidth: 0.5,
   lineStyle: "#0b1431",
 };
