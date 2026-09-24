@@ -6,7 +6,6 @@ const patternSelect = document.getElementById("patternSelect");
 const orientationSelect = document.getElementById("orientationSelect");
 const formas = new Formas(null, null, null, null);
 
-// Inicializamos selectedOrientation con el valor actual del select (por defecto "1")
 let selectedForm,
   selectedOrientation = parseInt(orientationSelect.value);
 
@@ -35,12 +34,8 @@ canvas.addEventListener("pointerdown", (e) => {
   let x = Math.floor(((e.clientX - rect.left) / rect.width) * cuadricula.ancho);
   let y = Math.floor(((e.clientY - rect.top) / rect.height) * cuadricula.alto);
 
-  // SELECCIONAR FORMAS
-  // MODIFICADO: Usar selectedOrientation en lugar del valor fijo 4
   const forma = new Formas(x, y, selectedForm, selectedOrientation);
-  console.log(forma.formas[selectedForm].length);
 
-  // DIBUJAR CELULAS
   const indice = celulas.findIndex(
     (celula) => celula.x === x && celula.y === y,
   );

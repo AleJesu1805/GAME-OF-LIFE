@@ -27,7 +27,7 @@ const colors = [
   "#5A189A", // Violeta oscuro
   "#9D174D", // Rosa vino
   "#006494", // Azul profundo
-  "#386641", // Verde bosque
+  "#125c20", // Verde bosque
   "#3C096C", // Púrpura oscuro
 ];
 
@@ -58,17 +58,17 @@ export function drawCelula(pos = { x: 1, y: 1 }) {
   ctx.fillStyle = colors[8];
   ctx.fillRect(pos.x * escala, pos.y * escala, escala, escala);
 
-  ctx.strokeStyle = cuadricula.lineStyle;
-  ctx.lineWidth = cuadricula.lineWidth;
-  ctx.strokeRect(pos.x * escala, pos.y * escala, escala, escala);
+  // ctx.strokeStyle = cuadricula.lineStyle;
+  // ctx.lineWidth = cuadricula.lineWidth;
+  // ctx.strokeRect(pos.x * escala, pos.y * escala, escala, escala);
   // drawCircle(pos);
 }
 
 export function drawCelda(pos = { x: 5, y: 9 }) {
-  ctx.fillStyle = "#1e2227";
+  ctx.fillStyle = "#140d31";
   ctx.fillRect(pos.x * escala, pos.y * escala, escala, escala);
 
-  ctx.strokeStyle = cuadricula.lineStyle;
-  ctx.lineWidth = cuadricula.lineWidth;
-  ctx.strokeRect(pos.x * escala, pos.y * escala, escala, escala);
+  // ctx.strokeStyle = cuadricula.lineStyle;
+  // ctx.lineWidth = cuadricula.lineWidth;
+  // ctx.strokeRect(pos.x * escala, pos.y * escala, escala, escala);
 }
