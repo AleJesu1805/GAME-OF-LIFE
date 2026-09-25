@@ -146,7 +146,7 @@ canvas {
   background-color: #24b2b2;
   border: 3px solid #579649;
   border-radius: 3%;
-  /* image-rendering: pixelated; */
+  image-rendering: pixelated;
 }
 
 @media (max-height: 380px) {

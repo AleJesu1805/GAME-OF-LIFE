@@ -1,7 +1,7 @@
 export const canvas = document.querySelector("canvas");
 export const ctx = canvas.getContext("2d");
-export const canvasWidth = 600;
-export const canvasHeight = 600;
+export const canvasWidth = 50;
+export const canvasHeight = 50;
 canvas.width = canvasWidth;
 canvas.height = canvasHeight;
 
@@ -31,10 +31,7 @@ const colors = [
   "#3C096C", // Púrpura oscuro
 ];
 
-export function drawCircle(
-  pos = { x: 1, y: 1 },
-  color = colors[Math.round(Math.random() * colors.length)],
-) {
+export function drawCircle(pos = { x: 1, y: 1 }, color = colors[8]) {
   // ctx.beginPath();
   // ctx.arc(pos.x * escala, pos.y * escala, escala / 2, 0, 2 * Math.PI);
   // ctx.strokeStyle = "blue";
@@ -53,10 +50,10 @@ export function drawCircle(
   ctx.fill();
 }
 
-export function drawCelula(pos = { x: 1, y: 1 }) {
+export function drawCelula(pos = { x: 1, y: 1 }, size = escala) {
   // ctx.fillStyle = colors[Math.round(Math.random() * colors.length)];
   ctx.fillStyle = colors[8];
-  ctx.fillRect(pos.x * escala, pos.y * escala, escala, escala);
+  ctx.fillRect(pos.x * size, pos.y * size, size, size);
 
   // ctx.strokeStyle = cuadricula.lineStyle;
   // ctx.lineWidth = cuadricula.lineWidth;

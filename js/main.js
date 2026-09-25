@@ -1,4 +1,5 @@
 import { cleanCanvas } from "./canvas/canvas.js";
+import { Formas } from "./UI/Formas.js";
 import { updateGeneration, cleanTable } from "./game-logic/game.js";
 
 if ("serviceWorker" in navigator) {
@@ -6,13 +7,17 @@ if ("serviceWorker" in navigator) {
 }
 
 updateGeneration();
+const rpentomino = new Formas(30, 30, "rPentomino");
+rpentomino.drawForma();
 
-const fps = 15;
+const fps = 30;
 const frameDuration = 1000 / fps;
 
 let ultimoTiempo = 0;
 let animationFrameId = null;
 let juegoActivo = false;
+let intervaloActualizacion = 3;
+let frameCount = 0;
 
 function gameLoop(tiempoActual) {
   if (!juegoActivo) return;
@@ -21,8 +26,12 @@ function gameLoop(tiempoActual) {
   if (delta < frameDuration) return;
   ultimoTiempo = tiempoActual - (delta % frameDuration);
 
-  cleanCanvas();
-  updateGeneration();
+  if (frameCount % intervaloActualizacion === 0) {
+    cleanCanvas();
+    updateGeneration();
+  }
+
+  frameCount++;
 }
 
 function actualizarEstadoControles() {
