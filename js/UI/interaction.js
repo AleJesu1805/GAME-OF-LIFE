@@ -24,16 +24,11 @@ patternSelect.addEventListener("change", (e) => {
   selectedForm = e.target.value;
 });
 
-// NUEVO: Escuchar cambios en el select de orientación para actualizar la variable
 orientationSelect.addEventListener("change", (e) => {
   selectedOrientation = parseInt(e.target.value);
 });
 
-canvas.addEventListener("pointerdown", (e) => {
-  const rect = canvas.getBoundingClientRect();
-  let x = Math.floor(((e.clientX - rect.left) / rect.width) * cuadricula.ancho);
-  let y = Math.floor(((e.clientY - rect.top) / rect.height) * cuadricula.alto);
-
+function addForma(x, y) {
   const forma = new Formas(x, y, selectedForm, selectedOrientation);
 
   const indice = celulas.findIndex(
@@ -47,4 +42,22 @@ canvas.addEventListener("pointerdown", (e) => {
     celulas.splice(indice, 1);
   }
   infoPopulation.textContent = `POPULATION: ${celulas.length}`;
+}
+
+canvas.addEventListener("pointerdown", (e) => {
+  const rect = canvas.getBoundingClientRect();
+  let x = Math.floor(((e.clientX - rect.left) / rect.width) * cuadricula.ancho);
+  let y = Math.floor(((e.clientY - rect.top) / rect.height) * cuadricula.alto);
+  addForma(x, y);
+});
+
+canvas.addEventListener("touchmove", (e) => {
+  const rect = canvas.getBoundingClientRect();
+  let x = Math.floor(
+    ((e.changedTouches[0].clientX - rect.left) / rect.width) * cuadricula.ancho,
+  );
+  let y = Math.floor(
+    ((e.changedTouches[0].clientY - rect.top) / rect.height) * cuadricula.alto,
+  );
+  addForma(x, y);
 });
