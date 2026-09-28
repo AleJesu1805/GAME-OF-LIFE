@@ -1,17 +1,30 @@
 export const canvas = document.querySelector("canvas");
 export const ctx = canvas.getContext("2d");
-export const canvasWidth = 50;
-export const canvasHeight = 50;
+export const canvasWidth = 500;
+export const canvasHeight = 500;
 canvas.width = canvasWidth;
 canvas.height = canvasHeight;
 
 export const cuadricula = {
   ancho: 50,
   alto: 50,
-  lineWidth: 0.5,
-  lineStyle: "#0b1431",
+  lineWidth: 2,
+  lineStyle: "#00000064",
 };
 export const escala = canvasWidth / cuadricula.ancho;
+let mostrarCuadricula = true;
+
+export function setMostrarCuadricula(visible) {
+  mostrarCuadricula = visible;
+}
+
+function drawBordeCelda(pos) {
+  if (!mostrarCuadricula) return;
+
+  ctx.strokeStyle = cuadricula.lineStyle;
+  ctx.lineWidth = cuadricula.lineWidth;
+  ctx.strokeRect(pos.x * escala, pos.y * escala, escala, escala);
+}
 
 export function cleanCanvas() {
   ctx.fillStyle = "#1e2227";
@@ -54,18 +67,12 @@ export function drawCelula(pos = { x: 1, y: 1 }, size = escala) {
   // ctx.fillStyle = colors[Math.round(Math.random() * colors.length)];
   ctx.fillStyle = colors[8];
   ctx.fillRect(pos.x * size, pos.y * size, size, size);
-
-  // ctx.strokeStyle = cuadricula.lineStyle;
-  // ctx.lineWidth = cuadricula.lineWidth;
-  // ctx.strokeRect(pos.x * escala, pos.y * escala, escala, escala);
+  drawBordeCelda(pos);
   // drawCircle(pos);
 }
 
 export function drawCelda(pos = { x: 5, y: 9 }) {
   ctx.fillStyle = "#140d31";
   ctx.fillRect(pos.x * escala, pos.y * escala, escala, escala);
-
-  // ctx.strokeStyle = cuadricula.lineStyle;
-  // ctx.lineWidth = cuadricula.lineWidth;
-  // ctx.strokeRect(pos.x * escala, pos.y * escala, escala, escala);
+  drawBordeCelda(pos);
 }

@@ -22,16 +22,41 @@
             PAUSED
           </button>
         </li>
-        <li><button onclick="updateGeneration()">NEXT</button></li>
-        <li><button onclick="previusGeneration()">BACK</button></li>
+        <li><button id="nextButton">NEXT</button></li>
+        <!-- <li><button onclick="previusGeneration()">BACK</button></li> -->
         <li><button onclick="cleanTable()">CLEAN</button></li>
         <li>
-          <select id="orientationSelect" name="select">
-            <option value="1" selected>0deg</option>
-            <option value="2">90deg</option>
-            <option value="3">180deg</option>
-            <option value="4">270deg</option>
-          </select>
+          <button
+            id="cellModeButton"
+            class="mode-toggle"
+            type="button"
+            aria-label="Modo añadir células"
+            aria-pressed="false"
+          >
+            <span id="cellModeLabel">ADD CELLS</span>
+            <span class="mode-switch" aria-hidden="true"></span>
+          </button>
+        </li>
+        <li>
+          <button
+            id="cellGridButton"
+            class="mode-toggle"
+            type="button"
+            aria-label="Ocultar cuadrícula de celdas"
+            aria-pressed="true"
+          >
+            <span> CELL GRID</span>
+            <span class="mode-switch" aria-hidden="true"></span>
+          </button>
+        </li>
+        <li>
+          <button
+            id="rotationButton"
+            type="button"
+            aria-label="Rotación: 0 grados"
+          >
+            ROTATE: 0deg
+          </button>
         </li>
         <li>
           <select id="patternSelect" name="select"></select>

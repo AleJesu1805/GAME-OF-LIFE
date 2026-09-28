@@ -7,8 +7,8 @@ if ("serviceWorker" in navigator) {
 }
 
 updateGeneration();
-const rpentomino = new Formas(30, 30, "rPentomino");
-rpentomino.drawForma();
+// const rpentomino = new Formas(30, 30, "rPentomino");
+// rpentomino.drawForma();
 
 const fps = 30;
 const frameDuration = 1000 / fps;
